@@ -38,4 +38,19 @@ public class UserController {
         }
         return serviceResponse;
     }
+
+    @RequestMapping( value = "logout.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<User> logout(HttpSession session){
+        session.removeAttribute(Const.CURRENT_USER);
+        return ServiceResponse.createBySuccess();
+    }
+
+    @RequestMapping( value = "register.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> register(User user){
+        return iUserService.register(user);
+    }
+
+
 }
