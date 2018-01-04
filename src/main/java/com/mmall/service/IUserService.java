@@ -10,4 +10,10 @@ public interface IUserService {
     ServiceResponse<String> register(User user);
 
     ServiceResponse<String> checkValid(String str ,String type);
+
+    ServiceResponse<String> selectQuestion(String username );
+
+    ServiceResponse<String> checkAnswer(String username,String question,String answer);
+
+    ServiceResponse<String> forgetResetPassword(String username ,String password ,String forgetToken);
 }
