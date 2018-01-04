@@ -52,5 +52,52 @@ public class UserController {
         return iUserService.register(user);
     }
 
+    @RequestMapping( value = "checkValid.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> checkValid(String str ,String type){
+        return iUserService.checkValid(str,type);
+    }
+
+    @RequestMapping( value = "getUserInfo.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<User> getUserInfo(HttpSession session){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user==null){
+            return ServiceResponse.createByErrorMessage("用户未登陆");
+
+        }
+        else {
+            return ServiceResponse.createBySuccess(user);
+        }
+    }
+
+    @RequestMapping( value = "forgetGetQuestin.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> forgetGetQuestin(String username){
+        return iUserService.selectQuestion(username);
+    }
+
+
+    @RequestMapping( value = "checkAnswer.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> checkAnswer(String username,String question,String answer){
+        return iUserService.checkAnswer(username,question,answer);
+    }
+
+    @RequestMapping( value = "forgetResetPassword.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> forgetResetPassword(String username ,String password ,String forgetToken){
+        return iUserService.forgetResetPassword(username, password, forgetToken);
+    }
+
+    @RequestMapping( value = "resetPassword.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> resetPassword(HttpSession session,String passwordOld,String passwordNew){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServiceResponse.createByErrorMessage("用户未登陆");
+        }
+        return iUserService.resetPassword(passwordOld,passwordNew,user);
+    }
 
 }
