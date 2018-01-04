@@ -170,8 +170,27 @@ public class UserServiceImpl implements IUserService{
         }
         return ServiceResponse.createByErrorMessage("密码更新失败");
 
-
     }
+
+    public ServiceResponse<User>  updateInfomation(User user){
+        int count = userMapper.checkEnmailNotExist(user.getEmail(),user.getId());
+        if (count>0){
+            return  ServiceResponse.createByErrorMessage("邮箱已存在");
+        }
+        User upadateUser = new User();
+        upadateUser.setId(user.getId());
+        upadateUser.setEmail(user.getEmail());
+        upadateUser.setAnswer(user.getAnswer());
+        upadateUser.setQuestion(user.getQuestion());
+        upadateUser.setPhone(user.getPhone());
+
+        int updataCount = userMapper.updateByPrimaryKeySelective(upadateUser);
+        if (updataCount>0){
+            return ServiceResponse.createBySuccessMessage("更新信息成功");
+        }
+        return ServiceResponse.createByErrorMessage("更新信息失败");
+    }
+
 
 
 }

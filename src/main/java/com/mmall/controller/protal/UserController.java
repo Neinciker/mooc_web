@@ -100,4 +100,26 @@ public class UserController {
         return iUserService.resetPassword(passwordOld,passwordNew,user);
     }
 
+    @RequestMapping( value = "updateInfomation.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<User> updateInfomation(HttpSession session,User user){
+        User user1 = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user1 == null){
+            return ServiceResponse.createByErrorMessage("用户未登陆");
+        }
+        user.setId(user1.getId());
+        user.setUsername(user1.getUsername());
+        ServiceResponse<User> userServiceResponse = iUserService.updateInfomation(user);
+        if (userServiceResponse.isSuccess()){
+            session.setAttribute(Const.CURRENT_USER,userServiceResponse.getData());
+        }
+        return userServiceResponse;
+    }
+
+
+
+
+
+
+
 }
