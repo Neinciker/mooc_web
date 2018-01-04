@@ -41,21 +41,24 @@ public class UserServiceImpl implements IUserService{
 
 
     public ServiceResponse<String> register(User user){
-        int resultcount = userMapper.checkUsername(user.getUsername());
-        if (resultcount>0){
-            return ServiceResponse.createByErrorMessage("用户已存在");
+
+        ServiceResponse validResponse = this.checkValid(user.getUsername(),Const.USERNAME);
+
+        if (!validResponse.isSuccess()){
+            return validResponse;
         }
 
-        resultcount = userMapper.checkEmail(user.getEmail());
-        if (resultcount>0){
-            return ServiceResponse.createByErrorMessage("邮箱已存在");
+
+        validResponse = this.checkValid(user.getEmail(),Const.EMAIL);
+        if (!validResponse.isSuccess()){
+            return validResponse;
         }
 
         user.setRole(Const.Role.ROLE_CUSTOMER);
 
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
 
-        resultcount = userMapper.insert(user);
+        int resultcount = userMapper.insert(user);
         if (resultcount == 0){
             return ServiceResponse.createByErrorMessage("注册失败");
 
@@ -67,6 +70,31 @@ public class UserServiceImpl implements IUserService{
 
     }
 
+
+    public ServiceResponse<String> checkValid(String str ,String type){
+        if(StringUtils.isNoneBlank(type)){
+            if (Const.USERNAME.equals(type)){
+                int resultcount = userMapper.checkUsername(str);
+                if (resultcount>0){
+                    return ServiceResponse.createByErrorMessage("用户已存在");
+                }
+            }
+
+            if (Const.EMAIL.equals(type)){
+                int resultcount = userMapper.checkUsername(str);
+                if (resultcount>0){
+                    return ServiceResponse.createByErrorMessage("用户已存在");
+                }
+            }
+
+
+
+        }else {
+            return ServiceResponse.createByErrorMessage("参数错误");
+        }
+
+        return ServiceResponse.createBySuccessMessage("注册成功");
+    }
 
 
 }
