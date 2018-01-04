@@ -90,4 +90,14 @@ public class UserController {
         return iUserService.forgetResetPassword(username, password, forgetToken);
     }
 
+    @RequestMapping( value = "resetPassword.do" , method = RequestMethod.GET)
+    @ResponseBody
+    public ServiceResponse<String> resetPassword(HttpSession session,String passwordOld,String passwordNew){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServiceResponse.createByErrorMessage("用户未登陆");
+        }
+        return iUserService.resetPassword(passwordOld,passwordNew,user);
+    }
+
 }

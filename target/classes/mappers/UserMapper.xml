@@ -177,15 +177,20 @@
   </select>
   
   <select id="checkAnswer" resultType="int" parameterType="map">
-      SELECT COUNT(1) FROM mmall_user
+    SELECT COUNT(1) FROM mmall_user
     WHERE username = #{username}
     and question = #{question}
     and answer = #{answer}
   </select>
   
-  <select id="updatePasswordByUsername" resultType="int" parameterType="map">
+  <update id="updatePasswordByUsername"  parameterType="map">
     UPDATE mmall_user
     SET password = #{password},updata_time = now()
     WHERE username = #{username}
+  </update>
+  <select id="checkPassword" resultType="int" parameterType="map">
+   SELECT COUNT(1) FROM mmall_user
+   WHERE password = #{password}
+   and id = #{userId}
   </select>
 </mapper>
