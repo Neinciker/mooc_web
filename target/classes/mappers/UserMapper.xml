@@ -193,4 +193,10 @@
    WHERE password = #{password}
    and id = #{userId}
   </select>
+  
+  <select id="checkEnmailNotExist" resultType="int" parameterType="map">
+  SELECT COUNT(1) FROM mmall_user
+   WHERE email = #{email}
+   and id != #{userId}
+  </select>
 </mapper>

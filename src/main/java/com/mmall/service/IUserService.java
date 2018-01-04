@@ -18,4 +18,8 @@ public interface IUserService {
     ServiceResponse<String> forgetResetPassword(String username ,String password ,String forgetToken);
 
     ServiceResponse<String> resetPassword( String passwordOld, String passwordNew,User user);
+
+    ServiceResponse<User>  updateInfomation(User user);
+
+    ServiceResponse<User>  getInfomation(Integer userId);
 }
